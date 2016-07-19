@@ -82,12 +82,12 @@ class GameScene: SKScene {
         let location = touch.locationInNode(self)
         
         // Set up some actions that will move the target to the touch location
-        let launchHook = SKAction.moveTo(location, duration: 0.5)
+        let launchHook = SKAction.moveTo(location, duration: 0.25)
         ropeTarget.runAction(launchHook)
         // Setup an action that will move the player to the location of the touch
         // This time add a wait so the player follows a moment later.
         let wait = SKAction.waitForDuration(0.5)
-        let movePlayer = SKAction.moveTo(location, duration: 0.5)
+        let movePlayer = SKAction.moveTo(location, duration: 0.25)
         let playerAction = SKAction.sequence([wait, movePlayer])
         player.runAction(playerAction)
     }
@@ -95,13 +95,18 @@ class GameScene: SKScene {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
+        let ropePath = UIBezierPath()
+        ropePath.moveToPoint(player.position)
+        // ropePath.addLineToPoint(ropeTarget.position)
+        let x = player.position.x // - (player.position.x - ropeTarget.position.x) / 2
+        let y = ropeTarget.position.y
+        let cPoint = CGPoint(x: x, y: y)
+        ropePath.addQuadCurveToPoint(ropeTarget.position, controlPoint: cPoint)
         
-        // This code draws a line between the player and target
-        let ropePath = CGPathCreateMutable()
-        CGPathMoveToPoint(ropePath, nil, player.position.x, player.position.y)
-        CGPathAddLineToPoint(ropePath, nil, ropeTarget.position.x, ropeTarget.position.y)
-        rope.path = ropePath
+        rope.path = ropePath.CGPath
         rope.strokeColor = UIColor.orangeColor()
+        rope.glowWidth = 3
         rope.lineWidth = 4
+        rope.lineCap = .Round
     }
 }
