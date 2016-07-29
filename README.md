@@ -19,3 +19,6 @@ The possible downsides to this system:
   1. Since objects are animated outside of physics you can not use physics collisions
     and "natural" physics motions. You can however use physics contacts. 
   2. To attach the hook to a moving target would difficult or impossible.
+  3. 
+
+![screenshot](screenshot.gif)
